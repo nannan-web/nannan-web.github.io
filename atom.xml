@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/nannan-web</id>
     <title>nannan</title>
-    <updated>2020-06-21T11:26:55.692Z</updated>
+    <updated>2020-06-21T12:10:14.189Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://github.com/nannan-web"/>
     <link rel="self" href="https://github.com/nannan-web/atom.xml"/>
@@ -26,6 +26,109 @@ public final class String<br>
     private int hash; // Default to 0<br>
     // ......其他内容<br>
 }</p>
+<p>String 源码中包含下面几个重要的方法。</p>
+<ol>
+<li>多构造方法<br>
+String 字符串有以下 4 个重要的构造方法：</li>
+</ol>
+<p>复制// String 为参数的构造方法<br>
+public String(String original) {<br>
+    this.value = original.value;<br>
+    this.hash = original.hash;<br>
+}<br>
+// char[] 为参数构造方法<br>
+public String(char value[]) {<br>
+    this.value = Arrays.copyOf(value, value.length);<br>
+}<br>
+// StringBuffer 为参数的构造方法<br>
+public String(StringBuffer buffer) {<br>
+    synchronized(buffer) {<br>
+        this.value = Arrays.copyOf(buffer.getValue(), buffer.length());<br>
+    }<br>
+}<br>
+// StringBuilder 为参数的构造方法<br>
+public String(StringBuilder builder) {<br>
+    this.value = Arrays.copyOf(builder.getValue(), builder.length());<br>
+}<br>
+其中，比较容易被我们忽略的是以 StringBuffer 和 StringBuilder 为参数的构造函数，因为这三种数据类型，我们通常都是单独使用的，所以这个小细节我们需要特别留意一下。</p>
+<ol start="2">
+<li>equals() 比较两个字符串是否相等<br>
+源码如下：</li>
+</ol>
+<p>复制public boolean equals(Object anObject) {<br>
+    // 对象引用相同直接返回 true<br>
+    if (this == anObject) {<br>
+        return true;<br>
+    }<br>
+    // 判断需要对比的值是否为 String 类型，如果不是则直接返回 false<br>
+    if (anObject instanceof String) {<br>
+        String anotherString = (String)anObject;<br>
+        int n = value.length;<br>
+        if (n == anotherString.value.length) {<br>
+            // 把两个字符串都转换为 char 数组对比<br>
+            char v1[] = value;<br>
+            char v2[] = anotherString.value;<br>
+            int i = 0;<br>
+            // 循环比对两个字符串的每一个字符<br>
+            while (n-- != 0) {<br>
+                // 如果其中有一个字符不相等就 true false，否则继续对比<br>
+                if (v1[i] != v2[i])<br>
+                    return false;<br>
+                i++;<br>
+            }<br>
+            return true;<br>
+        }<br>
+    }<br>
+    return false;<br>
+}<br>
+String 类型重写了 Object 中的 equals() 方法，equals() 方法需要传递一个 Object 类型的参数值，在比较时会先通过 instanceof 判断是否为 String 类型，如果不是则会直接返回 false，instanceof 的使用如下：</p>
+<p>复制Object oString = &quot;123&quot;;<br>
+Object oInt = 123;<br>
+System.out.println(oString instanceof String); // 返回 true<br>
+System.out.println(oInt instanceof String); // 返回 false<br>
+当判断参数为 String 类型之后，会循环对比两个字符串中的每一个字符，当所有字符都相等时返回 true，否则则返回 false。</p>
+<p>还有一个和 equals() 比较类似的方法 equalsIgnoreCase()，它是用于忽略字符串的大小写之后进行字符串对比。</p>
+<ol start="3">
+<li>compareTo() 比较两个字符串<br>
+compareTo() 方法用于比较两个字符串，返回的结果为 int 类型的值，源码如下：</li>
+</ol>
+<p>复制public int compareTo(String anotherString) {<br>
+    int len1 = value.length;<br>
+    int len2 = anotherString.value.length;<br>
+    // 获取到两个字符串长度最短的那个 int 值<br>
+    int lim = Math.min(len1, len2);<br>
+    char v1[] = value;<br>
+    char v2[] = anotherString.value;<br>
+    int k = 0;<br>
+    // 对比每一个字符<br>
+    while (k &lt; lim) {<br>
+        char c1 = v1[k];<br>
+        char c2 = v2[k];<br>
+        if (c1 != c2) {<br>
+            // 有字符不相等就返回差值<br>
+            return c1 - c2;<br>
+        }<br>
+        k++;<br>
+    }<br>
+    return len1 - len2;<br>
+}<br>
+从源码中可以看出，compareTo() 方法会循环对比所有的字符，当两个字符串中有任意一个字符不相同时，则 return char1-char2。比如，两个字符串分别存储的是 1 和 2，返回的值是 -1；如果存储的是 1 和 1，则返回的值是 0 ，如果存储的是 2 和 1，则返回的值是 1。</p>
+<p>还有一个和 compareTo() 比较类似的方法 compareToIgnoreCase()，用于忽略大小写后比较两个字符串。</p>
+<p>可以看出 compareTo() 方法和 equals() 方法都是用于比较两个字符串的，但它们有两点不同：</p>
+<p>equals() 可以接收一个 Object 类型的参数，而 compareTo() 只能接收一个 String 类型的参数；<br>
+equals() 返回值为 Boolean，而 compareTo() 的返回值则为 int。<br>
+它们都可以用于两个字符串的比较，当 equals() 方法返回 true 时，或者是 compareTo() 方法返回 0 时，则表示两个字符串完全相同。</p>
+<p>4. 其他重要方法<br>
+indexOf()：查询字符串首次出现的下标位置<br>
+lastIndexOf()：查询字符串最后出现的下标位置<br>
+contains()：查询字符串中是否包含另一个字符串<br>
+toLowerCase()：把字符串全部转换成小写<br>
+toUpperCase()：把字符串全部转换成大写<br>
+length()：查询字符串的长度<br>
+trim()：去掉字符串首尾空格<br>
+replace()：替换字符串中的某些字符<br>
+split()：把字符串分割并返回字符串数组<br>
+join()：把字符串数组转为字符串</p>
 ]]></content>
     </entry>
     <entry>
