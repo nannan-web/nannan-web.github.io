@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://https://github.com/nannan-web/</id>
+    <id>https://github.com/nannan-web</id>
     <title>Gridea</title>
-    <updated>2020-06-19T02:32:19.931Z</updated>
+    <updated>2020-06-21T11:23:23.334Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://https://github.com/nannan-web/"/>
-    <link rel="self" href="https://https://github.com/nannan-web/atom.xml"/>
+    <link rel="alternate" href="https://github.com/nannan-web"/>
+    <link rel="self" href="https://github.com/nannan-web/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>https://https://github.com/nannan-web/images/avatar.png</logo>
-    <icon>https://https://github.com/nannan-web/favicon.ico</icon>
+    <logo>https://github.com/nannan-web/images/avatar.png</logo>
+    <icon>https://github.com/nannan-web/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
     <entry>
+        <title type="html"><![CDATA[笔记-01-String 是如何实现的？它有哪些重要的方法？]]></title>
+        <id>https://github.com/nannan-web/post/bi-ji-01-string-shi-ru-he-shi-xian-de-ta-you-na-xie-chong-yao-de-fang-fa/</id>
+        <link href="https://github.com/nannan-web/post/bi-ji-01-string-shi-ru-he-shi-xian-de-ta-you-na-xie-chong-yao-de-fang-fa/">
+        </link>
+        <updated>2020-06-21T11:19:38.000Z</updated>
+        <content type="html"><![CDATA[<!-- more -->
+<p>以主流的 JDK 版本 1.8 来说，String 内部实际存储结构为 char 数组，源码如下：<br>
+public final class String<br>
+    implements java.io.Serializable, Comparable<String>, CharSequence {<br>
+    // 用于存储字符串的值<br>
+    private final char value[];<br>
+    // 缓存字符串的 hash code<br>
+    private int hash; // Default to 0<br>
+    // ......其他内容<br>
+}</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://https://github.com/nannan-web/post/hello-gridea/</id>
-        <link href="https://https://github.com/nannan-web/post/hello-gridea/">
+        <id>https://github.com/nannan-web/post/hello-gridea/</id>
+        <link href="https://github.com/nannan-web/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
